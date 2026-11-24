@@ -38,7 +38,8 @@ interface HealthData {
   cache_enabled: boolean;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const rawApiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = rawApiBase.replace(/\/+$/, '');
 
 function generateSessionId(): string {
   return 's-' + Math.random().toString(36).substring(2, 10);
