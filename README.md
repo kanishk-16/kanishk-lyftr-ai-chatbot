@@ -34,7 +34,7 @@ Make sure Docker and Docker Compose are installed and running.
    Add your valid LLM API keys in `.env` (e.g., Gemini or OpenAI keys):
    ```env
    LLM_API_KEYS=key_1_secret,key_2_secret
-   LLM_MODEL=gemini/gemini-2.0-flash
+   LLM_MODEL=gemini/gemini-flash-lite-latest
    ENABLE_FAILURE_SIMULATION=true
    ```
 
