@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
     LLM_API_KEYS: str = Field(default="key_1,key_2")
-    LLM_MODEL: str = Field(default="gemini/gemini-2.0-flash")
+    LLM_MODEL: str = Field(default="gemini/gemini-flash-lite-latest")
     DATABASE_URL: str = Field(default="sqlite:///./data/app.db")
     ALLOWED_ORIGINS: str = Field(default="*")
     ENABLE_FAILURE_SIMULATION: bool = Field(default=True)
