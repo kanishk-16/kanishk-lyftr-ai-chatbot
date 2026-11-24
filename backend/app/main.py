@@ -80,6 +80,22 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     )
 
 
+@app.get("/")
+async def root():
+    """
+    Root index endpoint directing to health and docs.
+    """
+    return {
+        "status": "ok",
+        "service": "Lyftr AI Gateway",
+        "endpoints": {
+            "health": "/health",
+            "chat": "/chat",
+            "docs": "/docs",
+        },
+    }
+
+
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     """
