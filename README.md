@@ -192,13 +192,3 @@ Use the **Failover Hook** dropdown in the UI or cURL:
 
 ---
 
-## 6. Bonus features (if any): what you added beyond the requirements and why
-
-1. **Interactive In-UI Failover Simulation**: A dedicated dropdown toolbar allows testers and reviewers to inject `X-Simulate-Failure` headers without requiring Postman or cURL commands.
-2. **Real-time Gateway Health Monitor**: Top-bar pill badge continuously verifies connection to `GET /health`, indicating key pool size and active cache status.
-3. **One-Click Session Reset**: Instantly resets client session state with a fresh session identifier to easily test cache replication across independent sessions.
-4. **Custom System Prompt Override**: Drawer input (`system-prompt-input`) allowing dynamic persona customisation per session.
-5. **Multi-Stage Container Optimization**:
-   - Backend: Builder pattern discarding build tools, yielding a lean Python image.
-   - Frontend: Node build artifacts served through an alpine Nginx server (< 25MB).
-6. **Automated Backend Pytest Suite**: Full test suite covering health check, validation errors (422), live inference, caching accuracy, multi-turn state, simulated failure hooks, and real provider exception fallbacks.
