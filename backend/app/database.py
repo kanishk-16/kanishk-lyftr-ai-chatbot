@@ -59,6 +59,9 @@ def session_exists(session_id: str) -> bool:
         cursor = conn.cursor()
         cursor.execute("SELECT 1 FROM messages WHERE session_id = ? LIMIT 1", (session_id,))
         return cursor.fetchone() is not None
+    except sqlite3.OperationalError:
+        init_db()
+        return False
     finally:
         conn.close()
 
@@ -91,5 +94,16 @@ def get_session_messages(session_id: str) -> List[Dict[str, Any]]:
                 msg["metadata"] = meta
             result.append(msg)
         return result
+    except sqlite3.OperationalError:
+        init_db()
+        return []
     finally:
         conn.close()
+
+
+# Ensure DB is initialized on module load
+try:
+    init_db()
+except Exception:
+    pass
+

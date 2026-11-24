@@ -50,6 +50,36 @@ def get_cache_key(model: str, messages: List[Dict[str, str]]) -> str:
     return litellm.cache.get_cache_key(model=model, messages=messages)
 
 
+def extract_cached_data(cached_entry: Any) -> Tuple[str, int, int]:
+    """Safely extracts (reply, input_tokens, output_tokens) from various LiteLLM cache payload types."""
+    if isinstance(cached_entry, dict):
+        if "reply" in cached_entry:
+            return (
+                str(cached_entry["reply"]),
+                int(cached_entry.get("input_tokens", 0)),
+                int(cached_entry.get("output_tokens", 0)),
+            )
+        if "choices" in cached_entry and cached_entry["choices"]:
+            choice = cached_entry["choices"][0]
+            msg = choice.get("message", {})
+            reply = msg.get("content", "")
+            usage = cached_entry.get("usage", {})
+            return (
+                str(reply),
+                int(usage.get("prompt_tokens", 0)),
+                int(usage.get("completion_tokens", 0)),
+            )
+
+    if hasattr(cached_entry, "choices") and cached_entry.choices:
+        reply = getattr(cached_entry.choices[0].message, "content", "") or ""
+        usage = getattr(cached_entry, "usage", None)
+        in_tok = getattr(usage, "prompt_tokens", 0) or 0
+        out_tok = getattr(usage, "completion_tokens", 0) or 0
+        return str(reply), int(in_tok), int(out_tok)
+
+    return str(cached_entry), 0, 0
+
+
 async def generate_chat_response(
     messages: List[Dict[str, str]],
     simulate_failure_header: Optional[str] = None,
@@ -75,15 +105,16 @@ async def generate_chat_response(
         t0 = time.perf_counter()
         cached_entry = litellm.cache.get_cache(cache_key=cache_key)
         if cached_entry:
+            reply_str, in_tok, out_tok = extract_cached_data(cached_entry)
             latency_ms = max(1, int((time.perf_counter() - t0) * 1000))
             return {
-                "reply": cached_entry["reply"],
+                "reply": reply_str,
                 "metadata": {
                     "resolution_source": "LLM_CACHE",
                     "model": model,
                     "latency_ms": latency_ms,
-                    "input_tokens": cached_entry.get("input_tokens", 0),
-                    "output_tokens": cached_entry.get("output_tokens", 0),
+                    "input_tokens": in_tok,
+                    "output_tokens": out_tok,
                     "key_id": None,
                     "fallback_attempts": 0,
                 },
