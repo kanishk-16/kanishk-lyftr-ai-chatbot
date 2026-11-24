@@ -9,7 +9,7 @@ A production-grade, resilient full-stack AI chatbot built with **React (TypeScri
 - **Frontend Application**: `https://<YOUR-FRONTEND-URL>` (e.g. deployed on Vercel / Netlify / Render)
 - **Backend API Base**: `https://<YOUR-BACKEND-URL>` (e.g. deployed on Render / Railway / Fly.io)
 - **API Health Endpoint**: `https://<YOUR-BACKEND-URL>/health`
-- **Public GitHub Repository**: `https://github.com/<YOUR-USERNAME>/<YOUR-REPO>`
+- **Public GitHub Repository**: [https://github.com/kanishk-16/kanishk-lyftr-ai-chatbot](https://github.com/kanishk-16/kanishk-lyftr-ai-chatbot)
 - **Demo Video (2–3 mins)**: `https://<YOUR-VIDEO-LINK>` (Loom / YouTube / Drive)
 
 ---
